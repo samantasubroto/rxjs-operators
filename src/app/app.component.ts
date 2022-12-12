@@ -11,9 +11,18 @@ import {
   switchAll,
   mergeAll,
   concatMap,
-  combineLatestAll
+  combineLatestAll,
 } from 'rxjs/operators';
-import { Observable, of, from, delay, debounceTime, combineLatest  } from 'rxjs';
+import {
+  Observable,
+  of,
+  from,
+  delay,
+  debounceTime,
+  combineLatest,
+  withLatestFrom,
+  interval
+} from 'rxjs';
 import { Comment, Comments } from 'src/model/common.model';
 import { OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
@@ -27,11 +36,9 @@ import { FormControl } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'rxjs-operators';
   userData$: Observable<Comment[]>;
-  quickData$ = of(1.5,2.9).pipe(delay(10000));
+  quickData$ = of();
+  stringArrayObser$ = from(['string', 'interger', 'boolean']).pipe(delay(2000));
   quickFlatData$ = of(1, 2, 3, 4);
-  stringArrayObser$ = from(['string', 'interger', 'boolean']).pipe(delay(3000));
-
-
 
   searchField = new FormControl();
 
@@ -40,20 +47,20 @@ export class AppComponent implements OnInit {
     { name: 'Sarah', age: 35 },
   ]);
 
-  getData() {
-    return from(['string', 'interger', 'boolean']);
-  }
+  // getData() {
+  //   setInterval(() => {
+  //     for (let i = 0; i <= 10; i++) return of(i);
+  //   }, 3000);
+  // }
   constructor(protected service: UserService) {}
+
+  source$ = interval(1000);
 
   ngOnInit() {
     // this.service.getComments().pipe(map(x => x.filter(y => y.id == 40))).subscribe(x => console.log(x))
-
     // this.quickData$.pipe(take(3),tap(((code : any) => console.log(code) ))).subscribe();
-
     // this.quickFlatData$.pipe(switchAll()).subscribe(value => console.log(value));
 
-    combineLatest( this.stringArrayObser$, this.quickFlatData$, this.quickData$).subscribe(([one, two, three]) => {
-       console.log(one+ " "+ two+" "+ three);
-    })
+   // this.source$.pipe(withLatestFrom(interval(5000))).subscribe(data => console.log(data));
   }
 }

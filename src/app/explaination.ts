@@ -93,3 +93,18 @@
            -- who ever comes first it will pick the last value of it i.e latest value
 
  */
+
+
+//withLatestFrom
+
+/***
+ * 
+ *    parent and child concept,
+ *       --starts only when both emits the first value
+ *       --and than wait for parent to emit the next value to print it, child emitting multiple value doesn't impact, only parent have to emit value to print it.
+ * 
+ *    syntax
+ * 
+ *   this.source$.pipe(withLatestFrom(interval(5000))).subscribe(data => console.log(data));
+ * 
+ */

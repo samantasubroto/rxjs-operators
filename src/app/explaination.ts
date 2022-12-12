@@ -25,6 +25,7 @@
  *      “Concat” Strategy —Queuing up every new Observable, and subscribing to a new observable only when the last observable completed.
  *     “Exhaust” strategy — the “don’t interrupt me” strategy, ignores (and never subscribe to) any new mapped Observable while the current Observable is still emitting values.
  * 
+ *    in-short: combines the inner obersvable with outer observable and gives the final result as both.
  * 
  *   <!------Important
  * 
@@ -45,4 +46,50 @@
  *
  * ####### Merge:-    
  *   
+ *         Syntax wise its same as SwitchMap.
+ * 
+ * ####### Concat:- 
+ *          
+ *          same as mergeMap
+ * 
+ * 
+ *    Why use combineLatest?
+ *     This operator is best used when you have multiple, long-lived observables that rely on each other for some calculation or determination. 
+ *    Basic examples of this can be seen in example three, where events from multiple buttons are being combined to produce a count of each and an overall total,
+ *      or a calculation of BMI from the RxJS documentation.
+ *    
+ *     Be aware that combineLatest will not emit an initial value until each observable emits at least one value. 
+ *    This is the same behavior as withLatestFrom and can be a gotcha as there will be no output and no error but one (or more) of your inner observables is likely not functioning as intended, 
+ *    or a subscription is late.
+ * 
+ *    syntax: 
+ *     quickFlatData$ = of(1, 2, 3, 4).pipe(delay(3000));
+       stringArrayObser$ = from(['string', 'interger', 'boolean']).pipe(delay(3000));
+ 
+ *     combineLatest( this.stringArrayObser$, this.quickFlatData$).subscribe(([one, two]) => {
+         console.log(one+ " "+ two);
+       });
+       Output: 
+       boolean 1
+       boolean 2
+       boolean 3
+       boolean 4
+
+        quickData$ = of(1.5,2.9).pipe(delay(10000));
+        quickFlatData$ = of(1, 2, 3, 4);
+        stringArrayObser$ = from(['string', 'interger', 'boolean']).pipe(delay(3000));
+
+        output: 
+        boolean 4 1.5
+        boolean 4 2.9
+
+       combineLatest( this.stringArrayObser$, this.quickFlatData$, this.quickData$).subscribe(([one, two, three]) => {
+           console.log(one+ " "+ two+" "+ three);
+       });
+
+       It will wait for every obersvable to emit atleast one data the moment he gets that one data he starts processing it.
+ *        
+       IMP: from first obs it will take latest value and merge it will all the other value of last obs(depending on delay time)
+           -- who ever comes first it will pick the last value of it i.e latest value
+
  */

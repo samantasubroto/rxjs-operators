@@ -24,6 +24,9 @@ import {
   interval,
   forkJoin
 } from 'rxjs';
+import {
+  ajax
+} from 'rxjs/ajax'
 import { Comment, Comments } from 'src/model/common.model';
 import { OnInit } from '@angular/core';
 import { formatDate } from '@angular/common';
@@ -64,13 +67,12 @@ export class AppComponent implements OnInit {
 
    // this.source$.pipe(withLatestFrom(interval(5000))).subscribe(data => console.log(data));
 
-     forkJoin(
-      {
-        google: this.quickData$,
-        microsoft: this.stringArrayObser$,
-        users: this.quickFlatData$
-
-      }
-     ).subscribe(data => console.log(data));
+   ajax('https://jsonplaceholder.typicode.com/comments').pipe(map((comments : any) => {
+    let email = [];
+    for(let data of comments.response){
+        email.push(data.email);
+    }
+    return email;
+   })).subscribe(data => console.log(data))
   }
 }

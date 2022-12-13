@@ -1,5 +1,34 @@
 /**
  *
+ *  Filter Operator in rxjs
+ * 
+ *    ElementAt() :-  this.quickData$.pipe(elementAt(2)).subscribe(data => console.log(data))
+ * 
+ *    single(value => value == some condition) emits only single value
+ * 
+ * 
+ *   Transformation Operators in rxjs
+ * 
+ *     Map()--> this.quickData$.pipe(map((value) => {return value === 5.5})).subscribe(data => console.log(data))
+ *             at times we can ignore the return as it anyways return the value.
+ * 
+ *    MapTo()--> not usefull much suppose sourse obs emiit 1...2...3 and we wrote mapTo('a') output is a...a...a
+ * 
+ * 
+ * 
+ * 
+ * ####3 AJAX
+ * 
+ *  ajax('https://jsonplaceholder.typicode.com/comments').pipe(map((comments : any) => {
+    let email = [];
+    for(let data of comments.response){
+        email.push(data.email);
+    }
+    return email;
+   })).subscribe(data => console.log(data))
+ * 
+ * 
+ * 
  *  Some Important Points
  *
  *  take(1) --> take operator with consider one gaint array as single input so if writing take(5) for a single huge array it will not working as expected
@@ -94,7 +123,6 @@
 
  */
 
-
 //withLatestFrom
 
 /***
@@ -107,12 +135,12 @@
  * 
  *   this.source$.pipe(withLatestFrom(interval(5000))).subscribe(data => console.log(data));
  * 
- */
+ 
 
 
-/**
+
  * 
- *          ForkJoin
+ *          ###### ForkJoin
  * 
  *   --> passing multiple observable as input and it will wait untill last element emitted from each observable is complete than it will 
  *   --> only the last element of each obs.
@@ -125,6 +153,17 @@
       }
      ).subscribe(data => console.log(data));
   }
- * 
- * 
- */
+ 
+   * 
+   *             Good to know things....
+   * 
+   *    ###### buffer: will store the returned data in form of array and gives you when interval ends or as per logic written
+   * 
+   *       let source$ = interval(500);
+   
+           source$.pipe(buffer(interval(2000))).subscribe(data => console.log(data))
+
+
+         ######## Window
+         works same as buffer but return in form of observable.           
+   */

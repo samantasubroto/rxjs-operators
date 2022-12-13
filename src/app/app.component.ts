@@ -21,7 +21,8 @@ import {
   debounceTime,
   combineLatest,
   withLatestFrom,
-  interval
+  interval,
+  forkJoin
 } from 'rxjs';
 import { Comment, Comments } from 'src/model/common.model';
 import { OnInit } from '@angular/core';
@@ -36,8 +37,8 @@ import { FormControl } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'rxjs-operators';
   userData$: Observable<Comment[]>;
-  quickData$ = of();
-  stringArrayObser$ = from(['string', 'interger', 'boolean']).pipe(delay(2000));
+  quickData$ = of(1.5,5.5,6.6);
+  stringArrayObser$ = from(['string', 'interger', 'boolean']).pipe(delay(20000));
   quickFlatData$ = of(1, 2, 3, 4);
 
   searchField = new FormControl();
@@ -62,5 +63,14 @@ export class AppComponent implements OnInit {
     // this.quickFlatData$.pipe(switchAll()).subscribe(value => console.log(value));
 
    // this.source$.pipe(withLatestFrom(interval(5000))).subscribe(data => console.log(data));
+
+     forkJoin(
+      {
+        google: this.quickData$,
+        microsoft: this.stringArrayObser$,
+        users: this.quickFlatData$
+
+      }
+     ).subscribe(data => console.log(data));
   }
 }

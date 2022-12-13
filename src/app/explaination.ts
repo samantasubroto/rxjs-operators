@@ -108,3 +108,23 @@
  *   this.source$.pipe(withLatestFrom(interval(5000))).subscribe(data => console.log(data));
  * 
  */
+
+
+/**
+ * 
+ *          ForkJoin
+ * 
+ *   --> passing multiple observable as input and it will wait untill last element emitted from each observable is complete than it will 
+ *   --> only the last element of each obs.
+ *    forkJoin(
+      {
+        google: this.quickData$,
+        microsoft: this.stringArrayObser$,
+        users: this.quickFlatData$
+
+      }
+     ).subscribe(data => console.log(data));
+  }
+ * 
+ * 
+ */
